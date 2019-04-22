@@ -3,6 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Friend Finder: Survey</title>
+    <!-- Reset CSS -->
+    <link rel="stylesheet" href="./css/reset.css" />
+    <!-- style css -->
+    <link rel="stylesheet" href="./css/style.css" />
     <!-- Bootstrap CDN -->
     <link
       rel="stylesheet"
@@ -198,7 +203,22 @@
       <br />
       <br />
 
-      <button class="btn btn-primary btn-lg btn-block" id="submit">
+       <!-- Modal -->
+       <div class="modal" id="modal1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title">Closest Friend Matched!</h2>
+            </div>
+            <div class="modal-body">
+              <h5 id="modalUserMatch"></h5>
+              <img id="modalMatchImage" src="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-lg btn-block" id="submit" data-toggle="modal" data-target="#modal1">
         <i class="fa fa-check-circle" aria-hidden="true"></i> Submit
       </button>
 
@@ -206,8 +226,8 @@
 
       <footer class="footer">
         <div class="container">
-          
-          <p> &copy 2019 ZachDrake
+          <p>
+            &copy 2019 ZachDrake
             <a href="/api/friends">API Friends List</a>
             |
             <a href="https://github.com/ZachDrake/friend-finder"
@@ -220,7 +240,7 @@
       <script type="text/javascript">
         $("#submit").on("click", event => {
           event.preventDefault();
-        
+
           var newFriend = {
             name: $("#name")
               .val()
@@ -242,8 +262,11 @@
             ]
           };
 
-          $.post("/api/friends", newFriend).then(data => {
-            console.log(data);
+          $.post("/api/friends", newFriend).done(data => {
+        
+            $("#modalUserMatch").html(data.matchName);
+
+            $("#modalMatchImage").attr("src", data.matchImage);
           });
         });
       </script>
